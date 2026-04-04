@@ -17,7 +17,15 @@ jobs:
 
       - name: Generate sitemap.xml
         run: |
-          BASE_URL="https://subtleazn.github.io/link-in-bio"
+          OWNER="${{ github.repository_owner }}"
+          REPO="${{ github.event.repository.name }}"
+
+          if [ "$REPO" = "${OWNER}.github.io" ]; then
+            BASE_URL="https://${OWNER}.github.io"
+          else
+            BASE_URL="https://${OWNER}.github.io/${REPO}"
+          fi
+
           TODAY=$(date -u +"%Y-%m-%dT%H:%M:%S+00:00")
 
           cat > sitemap.xml << EOF
